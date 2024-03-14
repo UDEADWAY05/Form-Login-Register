@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import InputSign from "../components/inputSign";
 import RadioField from "../components/radioField";
+import { validForm } from "../utils/valid";
+
+const initialState = {
+    name: "",
+    login: "",
+    email: "",
+    sex: "male",
+    password: "",
+    copyPassword: ""
+}
 
 const SignUpPage = () => {
-    const [state, setState] = useState({
-        name: "", login: "", email: "", sex: "male",  password: "", copyPassword: ""
-    })
-    const [isValid, setIsValid] = useState(false)
+    const [state, setState] = useState(initialState)
+    const [isFormValid, setIsFormValid] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -14,17 +22,7 @@ const SignUpPage = () => {
     }
 
     useEffect(() => {
-        const arr = []
-        Object.keys(state).map((el) => {
-            if (state[el].length > 0) {
-                arr.push(el)
-            }
-        })
-        if (arr.length === Object.keys(state).length) {
-            setIsValid(true)
-        } else {
-            setIsValid(false)
-        }
+        validForm(state, setIsFormValid)
     }, [state])
 
     const handleChange = (target) => {
@@ -92,7 +90,7 @@ const SignUpPage = () => {
                     onChange={handleChange}
                     required={true}
                 />
-                <button type="submit" disabled={!isValid} className="btn">Отправить</button>
+                <button type="submit" disabled={!isFormValid} className="btn">Отправить</button>
         </form>
     );
 }

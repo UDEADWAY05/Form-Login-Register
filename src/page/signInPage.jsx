@@ -1,25 +1,18 @@
 import { useEffect, useState } from "react";
 import InputSign from "../components/inputSign";
+import { validForm } from "../utils/valid";
+
+const initialState = {
+    email: "", password: ""
+}
 
 const SignInPage = () => {
-    const [state, setState] = useState({
-        email: "", password: ""
-    })
-    const [isValid, setIsValid] = useState(false)
+    const [state, setState] = useState(initialState)
+    const [isFormValid, setIsFormValid] = useState(false)
 
     useEffect(() => {
-        const arr = []
-        Object.keys(state).map((el) => {
-            if (state[el].length > 0) {
-                arr.push(el)
-            }
-        })
-        if (arr.length === Object.keys(state).length) {
-            setIsValid(true)
-        } else {
-            setIsValid(false)
-        }
-    }, [state])
+        validForm(state, setIsFormValid)
+    }, [state.email, state.password])
 
 
     const handleSubmit = (e) => {
@@ -54,7 +47,7 @@ const SignInPage = () => {
                     onChange={handleChange}
                     required={true}
                 />
-                <button type="submit" disabled={!isValid} className="btn">Отправить</button>
+                <button type="submit" disabled={!isFormValid} className="btn">Отправить</button>
         </form>
     );
 }
